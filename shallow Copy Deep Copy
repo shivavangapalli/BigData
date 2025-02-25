@@ -1,0 +1,65 @@
+# SHALLOW COPY 
+
+>>> import copy
+>>> list_a = [1,2,3,4]
+>>> shallo_a = copy.copy(list_a)
+>>> shallo_a
+[1, 2, 3, 4]
+>>> list_a[0] = 100
+>>> shallo_a
+[1, 2, 3, 4]
+>>> shallo_a[0] = 200
+>>> list_a
+
+The above code was not working as expected . We did everything right though . 
+
+Why is copy.copy() working like copy.deepcopy() here?
+In Python, integers (int), strings (str), and tuples are immutable.
+When you make a shallow copy of a list containing only immutable objects, Python does not copy references 
+to mutable objects—it simply copies the values (since they cannot change in place).
+This means that modifying an integer in original_a (original_a[2] = 'mukesh') creates a new object in memory rather than modifying the existing one.
+The copied list (shallo_a) is not affected because the reference to the original integer 3 is replaced with a new reference to 'mukesh'.
+
+Now take this another example : 
+
+>>> import copy
+>>> a = [1,2,[3,4]]
+>>> b = copy.copy(a)
+>>> b
+[1, 2, [3, 4]]
+>>> a[2][0] = 'mukesh'
+>>> b
+[1, 2, ['mukesh', 4]]
+>>> 
+
+What happens with a mutable object?
+If the list contained mutable objects like lists or dictionaries, then copy.copy() would behave differently, as shown below:
+
+** Note : This scenerio added to our knoweldge base , a good candidate for discussion . 
+
+
+# DEEP COPY 
+
+>>> import copy 
+>>> a = [1,2,[3,4]]
+>>> deep_copy = copy.deepcopy(a)
+>>> print("a: ",a)
+a:  [1, 2, [3, 4]]
+>>> print("deep copy : ",deep_copy)
+deep copy :  [1, 2, [3, 4]]
+>>> # Now make a change
+>>> a[2][0] = 'mukesh'
+>>> print("a: ",a)
+a:  [1, 2, ['mukesh', 4]]
+>>> print("deep copy : ",deep_copy)
+deep copy :  [1, 2, [3, 4]]
+
+Since copy.deepcopy() creates an independent copy, modifying original_list[2] does not affect deep_copy_list.
+
+
+
+Key Takeaways
+Copy Type	Works On	Behavior with Mutable Objects
+copy.copy() (Shallow Copy)	Lists, Dictionaries, Objects	Only copies the outer structure; inner objects share references
+copy.deepcopy() (Deep Copy)	Lists, Dictionaries, Objects	Recursively copies everything, ensuring full independence
+
